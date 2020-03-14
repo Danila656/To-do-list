@@ -18,6 +18,7 @@ body {
     box-shadow: 0 0 10px rgba(111, 111, 111, 0.25);
     border-radius: 0 30px 30px 0;
     margin-left: 2px;
+    cursor: pointer;
 }
 
 .unit-adder {
@@ -30,11 +31,13 @@ body {
     line-height: 21px;
     color: #999999;
     background: #ffffff;
-    padding: 15px 150px 13px 23px;
+    width: 300px;
+    padding: 15px 23px 13px 23px;
     border: 1px solid #f2f2f2;
     box-sizing: border-box;
     box-shadow: 0 0 10px rgba(111, 111, 111, 0.25);
-    border-radius: 30px 0 0 30px
+    border-radius: 30px 0 0 30px;
+    word-wrap: break-word;
 }
 
 .task-block {
@@ -46,9 +49,10 @@ body {
 
 
 .taskName {
+    margin: 0;
     word-wrap: break-word;
     color: #c4c4c4;
-    width: 200px;
+    width: 220px;
     text-overflow: ellipsis;
 }
 
@@ -56,8 +60,7 @@ body {
     color: lightgoldenrodyellow;
     background-color: rgba(0, 247, 14, 0.65);
     text-decoration: none;
-    padding: 15px 10px;
-    border-radius: 5px;
+    cursor: pointer;
 }
 
 .delete-button {
@@ -66,6 +69,7 @@ body {
     background-color: #bb0005;
     padding: 15px 10px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .task-block div {
@@ -89,11 +93,15 @@ body {
     background-color: #bb0005;
     color: gainsboro;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .ready-text {
     text-decoration: none;
+    color: #9bfaa3;
+}
+
+.side-class {
     padding: 15px 10px;
     border-radius: 5px;
-    color: #9bfaa3;
 }
