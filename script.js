@@ -7,8 +7,8 @@ let task;
 window.onload = () => {
     arrWithTasks = JSON.parse(localStorage.getItem('save'));
 
-    for (let i = 0; i < arrWithTasks.length; i++) {
-        const obj = arrWithTasks[i];
+    arrWithTasks.forEach(function (items) {
+        const obj = items;
         if (obj.status === 'Выполнено') {
             document.getElementById('toDoList').innerHTML += `
          <div class='task-block'>
@@ -36,7 +36,7 @@ window.onload = () => {
             </div>
         `
         }
-    }
+    });
 };
 
 const doTrueWritingDate = () => {
