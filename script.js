@@ -1,8 +1,10 @@
 let arrWithTasks = [];
 
 window.onload = () => {
-    arrWithTasks = JSON.parse(localStorage.getItem('tasks'));
-    addTasksToPage();
+    if(JSON.parse(localStorage.getItem('tasks'))!=null){
+        arrWithTasks = JSON.parse(localStorage.getItem('tasks'));
+        addTasksToPage();
+    }
 };
 
 const getAddTime = () => {
@@ -25,13 +27,17 @@ const getAddTime = () => {
 const checkTaskName = (nameOfTheTask) => {
     let obj;
 
+    if(nameOfTheTask === ''){
+        return appendixTask();
+    }
+
     arrWithTasks.forEach(function (item) {
         obj = item;
 
-        if (obj.name === nameOfTheTask ||!nameOfTheTask) {
+        if (obj.name === nameOfTheTask ) {
             return appendixTask();
         }
-    })
+    });
 };
 
 
