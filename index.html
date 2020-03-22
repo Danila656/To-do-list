@@ -7,10 +7,13 @@
     <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<a class="delete-all-button" onclick='removeAllTasks()'>&#xD7;</a>
+<div class="div-with-delete-buttons">
+    <a class="delete-all-tasks-button" onclick='removeAllTasks()'>Delete all tasks</a>
+    <a class="delete-ready-tasks-button" onclick="removeReadyTasks()">Delete ready tasks</a>
+</div>
 <div class="unit-adder">
     <input id="TaskNameWriter">
-    <a onclick="appendixTask()" class="add-button">Добавить</a>
+    <a onclick="appendixTask()" class="add-button">Add task</a>
 </div>
 <div id="toDoList"></div>
 </body>

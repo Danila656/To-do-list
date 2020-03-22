@@ -1,45 +1,16 @@
-let month;
-let dayOfMonth;
-let arrWithNames = [];
 let arrWithTasks = [];
-let task;
 
 window.onload = () => {
-    arrWithTasks = JSON.parse(localStorage.getItem('save'));
-
-    arrWithTasks.forEach(function (items) {
-        const obj = items;
-        if (obj.status === 'Выполнено') {
-            document.getElementById('toDoList').innerHTML += `
-         <div class='task-block'>
-                <div>
-                    <div><p class='taskName'>${obj.name}</p></div>
-                    <p class='time'>${obj.time}</p>
-                </div>
-                <div>
-                   <a  id="acceptButton" class="ready-text side-class" onclick="confirm(event)">${obj.status}</a>
-                    <a id="removeButton" onclick="remove(event)" class="delete-button">Удалить</a>
-                </div>
-            </div>
-        `
-        } else {
-            document.getElementById('toDoList').innerHTML += `
-         <div class='task-block'>
-                <div>
-                    <div><p class='taskName'>${obj.name}</p></div>
-                    <p class='time'>${obj.time}</p>
-                </div>
-                <div>
-                   <a  id="acceptButton" class="accept-button side-class" onclick="confirm(event)">${obj.status}</a>
-                    <a id="removeButton" onclick="remove(event)" class="delete-button">Удалить</a>
-                </div>
-            </div>
-        `
-        }
-    });
+    arrWithTasks = JSON.parse(localStorage.getItem('tasks'));
+    addTasksToPage();
 };
 
-const doTrueWritingDate = () => {
+const getAddTime = () => {
+    const date = new Date;
+    const year = date.getFullYear();
+    let month = date.getMonth();
+    let dayOfMonth = date.getDate();
+
     if (month < 10) {
         month += 1;
         month = '0' + month;
@@ -47,110 +18,142 @@ const doTrueWritingDate = () => {
     if (dayOfMonth < 10) {
         dayOfMonth = '0' + dayOfMonth;
     }
+
+    return dayOfMonth + '.' + month + '.' + year;
 };
 
-const confirm = (event) => {
-    const eventElement = event.target;
-    const size = arrWithTasks.length;
+const checkTaskName = (nameOfTheTask) => {
+    let obj;
 
-    eventElement.className = 'ready-text side-class';
-    eventElement.innerHTML = 'Выполнено';
+    arrWithTasks.forEach(function (item) {
+        obj = item;
 
-    localStorage.clear();
-    arrWithTasks = [];
-
-    for (let i = 0; i < size; i++) {
-        arrWithTasks.push({
-            name: document.getElementsByClassName('taskName')[i].innerHTML,
-            time: document.getElementsByClassName('time')[i].innerHTML,
-            status: document.getElementsByClassName('side-class')[i].innerHTML
-        });
-    }
-    localStorage.setItem('save', JSON.stringify(arrWithTasks));
+        if (obj.name === nameOfTheTask ||!nameOfTheTask) {
+            return appendixTask();
+        }
+    })
 };
 
-const remove = (event) => {
-    const eventElement = event.target;
-    const parentElement = document.getElementById('toDoList');
 
-    parentElement.removeChild(eventElement.parentNode.parentNode);
+const addThisTaskToArray = (taskName, addTime, taskStatus, taskId) => {
+    arrWithTasks.push({
+        name: taskName,
+        time: addTime,
+        status: taskStatus,
+        taskId: taskId
+    })
+};
 
-    arrWithNames = document.getElementsByClassName('taskName');
+const addTasksToPage = () => {
+    let obj;
 
-    localStorage.clear();
-    arrWithTasks = [];
-
-    for (let i = 0; i < arrWithNames.length; i++) {
-        arrWithTasks.push({
-            name: arrWithNames[i].textContent,
-            time: document.getElementsByClassName('time')[i].textContent,
-            status: document.getElementsByClassName('side-class')[i].textContent
-        });
-    }
-    localStorage.setItem('save', JSON.stringify(arrWithTasks));
+    document.getElementById('toDoList').innerHTML = '';
+    arrWithTasks.forEach(function (item) {
+        obj = item;
+        document.getElementById('toDoList').innerHTML += `
+        <div id =${obj.taskId} class='task-block'>
+               <div>
+                    <div>
+                        <p class='taskName'>${obj.name}</p>
+                    </div>
+                    <p class='time'>${obj.time}</p>     
+               </div>
+               <div> 
+                    ${obj.status ? ' <a id="cancelButton" onclick="cancel(this.id)">Cancel</a>' : '<a  id="acceptButton" class="accept-button" onclick="confirm(this.id)">Complete</a>'}
+                    ${obj.status ? '<a  id="acceptButton" class="ready-text" onclick="confirm(event)">Ready</a>' : ''}
+                    <a id="removeButton" onclick="remove(event)" class="delete-button">Delete</a>
+                </div>
+            </div>
+        `;
+    });
 };
 
 const appendixTask = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const name = document.getElementById('TaskNameWriter').value;
-    let checkTaskName = 1;
+    const taskName = document.getElementById('TaskNameWriter').value;
+    const taskId = +new Date;
+    const taskAddTime = getAddTime();
+    let taskStatus = false;
 
-    month = date.getMonth();
-    dayOfMonth = date.getDate();
-    doTrueWritingDate();
+    checkTaskName(taskName);
+    document.getElementById('TaskNameWriter').value = '';
 
-    arrWithTasks = document.getElementsByClassName('task-block');
-    arrWithNames = [];
+    addThisTaskToArray(taskName, taskAddTime, taskStatus, taskId);
+    addTasksToPage();
 
-    for (let i = 0; i < arrWithTasks.length; i++) {
-        arrWithNames.push(document.getElementsByClassName('taskName')[i].textContent);
-    }
+    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+};
 
-    if (name === '') {
-        checkTaskName = 0;
-    }
-    arrWithNames.forEach(function (item, i, arrWithNames) {
-        if (item === name) {
-            checkTaskName = 0;
+const confirm = (taskId) => {
+    const idOfThisTask = event.target.parentNode.parentNode.id;
+    let obj;
+
+    arrWithTasks.forEach(function (item, i,) {
+        obj = item;
+        if (obj.taskId === Number(idOfThisTask)) {
+            obj.status = true;
         }
     });
 
-    if (checkTaskName) {
-        task = ` <div class='task-block'>
-                <div>
-                    <div><p class='taskName'>${name}</p></div>
-                    <p class='time'>${dayOfMonth} . ${month} . ${year}</p>
-                </div>
-                <div>
-                   <a  id="acceptButton" class="accept-button side-class" onclick="confirm(event)">Выполнить</a>
-                    <a id="removeButton" onclick="remove(event)" class="delete-button">Удалить</a>
-                </div>
-            </div>`;
+    document.getElementById('toDoList').innerHTML = '';
+    addTasksToPage();
 
-        arrWithNames.push(name);
-        document.getElementById('TaskNameWriter').value = '';
-        document.getElementById('toDoList').innerHTML += `${task}`;
+    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+};
 
-        localStorage.clear();
-        arrWithTasks = [];
+const cancel = (taskStatus) => {
+    const idOfThisTask = event.target.parentNode.parentNode.id;
+    let obj;
 
-        for (let i = 0; i < arrWithNames.length; i++) {
-            arrWithTasks.push({
-                name: document.getElementsByClassName('taskName')[i].innerHTML,
-                time: document.getElementsByClassName('time')[i].innerHTML,
-                status: document.getElementsByClassName('side-class')[i].innerHTML
-            });
+    arrWithTasks.forEach(function (item, i,) {
+        obj = item;
+        if (obj.taskId === Number(idOfThisTask)) {
+            obj.status = false;
         }
-        localStorage.setItem('save', JSON.stringify(arrWithTasks));
-    }
+    });
+
+    document.getElementById('toDoList').innerHTML = '';
+    addTasksToPage();
+
+    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+};
+
+const remove = (event) => {
+    const idOfThisTask = event.target.parentNode.parentNode.id;
+    let obj;
+
+    arrWithTasks.forEach(function (item, i,) {
+        obj = item;
+        if (obj.taskId === Number(idOfThisTask)) {
+            arrWithTasks.splice(i, 1);
+        }
+    });
+
+    addTasksToPage();
+
+    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+};
+
+const removeReadyTasks = () => {
+    let obj;
+
+    const searchReadyTasks = () => {
+        arrWithTasks.forEach(function (item, i,) {
+            obj = item;
+            if (obj.status === true) {
+                arrWithTasks.splice(i, 1);
+                searchReadyTasks()
+            }
+        });
+    };
+
+    searchReadyTasks();
+    addTasksToPage();
+
+    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
 };
 
 const removeAllTasks = () => {
     document.getElementById('toDoList').innerHTML = '';
-    arrWithNames = [];
     arrWithTasks = [];
     localStorage.clear();
 };
-
-//Когда использовал forEach ,выдавало постоянно ошибку в консоли в браузере и код не работал.
