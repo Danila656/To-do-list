@@ -1,7 +1,15 @@
 let arrWithTasks = [];
 
+document.onkeyup = function (e) {
+    e = e || window.event;
+    if (e.keyCode === 13) {
+       appendixTask();
+    }
+    return false;
+};
+
 window.onload = () => {
-    if(JSON.parse(localStorage.getItem('tasks'))!=null){
+    if (JSON.parse(localStorage.getItem('tasks')) != null) {
         arrWithTasks = JSON.parse(localStorage.getItem('tasks'));
         addTasksToPage();
     }
@@ -27,14 +35,14 @@ const getAddTime = () => {
 const checkTaskName = (nameOfTheTask) => {
     let obj;
 
-    if(nameOfTheTask === ''){
+    if (nameOfTheTask === '') {
         return appendixTask();
     }
 
     arrWithTasks.forEach(function (item) {
         obj = item;
 
-        if (obj.name === nameOfTheTask ) {
+        if (obj.name === nameOfTheTask) {
             return appendixTask();
         }
     });
