@@ -29,6 +29,7 @@ body {
 }
 
 #TaskNameWriter {
+    outline:none;
     font-style: italic;
     line-height: 21px;
     color: #999999;

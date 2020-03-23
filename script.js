@@ -1,9 +1,10 @@
 let arrWithTasks = [];
+let trueWritingName;
 
-document.onkeyup = function (e) {
-    e = e || window.event;
-    if (e.keyCode === 13) {
-       appendixTask();
+const appendixTaskByEnter = (key) => {
+    key = key || window.event;
+    if (key.keyCode === 13) {
+         appendixTask();
     }
     return false;
 };
@@ -36,14 +37,14 @@ const checkTaskName = (nameOfTheTask) => {
     let obj;
 
     if (nameOfTheTask === '') {
-        return appendixTask();
+        trueWritingName = false;
     }
 
     arrWithTasks.forEach(function (item) {
         obj = item;
 
         if (obj.name === nameOfTheTask) {
-            return appendixTask();
+            trueWritingName = false;
         }
     });
 };
@@ -87,14 +88,17 @@ const appendixTask = () => {
     const taskId = +new Date;
     const taskAddTime = getAddTime();
     let taskStatus = false;
+    trueWritingName = true;
 
     checkTaskName(taskName);
-    document.getElementById('TaskNameWriter').value = '';
+    if (trueWritingName) {
+        document.getElementById('TaskNameWriter').value = '';
 
-    addThisTaskToArray(taskName, taskAddTime, taskStatus, taskId);
-    addTasksToPage();
+        addThisTaskToArray(taskName, taskAddTime, taskStatus, taskId);
+        addTasksToPage();
 
-    localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+        localStorage.setItem('tasks', JSON.stringify(arrWithTasks));
+    }
 };
 
 const confirm = (taskId) => {

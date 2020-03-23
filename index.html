@@ -5,7 +5,7 @@
     <title>To Do list</title>
     <script src="script.js"></script>
     <link href="styles.css" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" >
 </head>
 <body>
 <div class="div-with-delete-buttons">
@@ -13,8 +13,8 @@
     <a class="delete-ready-tasks-button" onclick="removeReadyTasks()">Delete ready tasks</a>
 </div>
 <div class="unit-adder">
-    <input id="TaskNameWriter">
-    <a onclick="appendixTask()" class="add-button">Add task</a>
+    <input id="TaskNameWriter" onkeyup="appendixTaskByEnter(event)">
+    <a onclick="appendixTask()"  class="add-button">Add task</a>
 </div>
 <div id="toDoList"></div>
 </body>
