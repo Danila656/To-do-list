@@ -6,6 +6,7 @@ const appendixTaskByEnter = (key) => {
     if (key.keyCode === 13) {
          appendixTask();
     }
+
     return false;
 };
 
